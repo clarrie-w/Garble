@@ -2,7 +2,7 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Container;
 import java.awt.BorderLayout; 
-import javax.swing.JFrame;testest
+import javax.swing.JFrame;
 
 class Main extends JFrame{
 
