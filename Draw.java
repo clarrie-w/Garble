@@ -4,9 +4,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JPanel; 
+import javax.swing.JPanel;
   
 public class Draw extends JPanel implements Runnable, KeyListener {
+  private Row row0 = new Row(0);
+  private Row row1 = new Row(1);
+  private Row row2 = new Row(2);
+  private Row row3 = new Row(3);
+  private Row row4 = new Row(4);
   private int[][] x = new int[6][5];
   private int[][] y = new int[6][5];
   private int width = 65;
@@ -14,7 +19,7 @@ public class Draw extends JPanel implements Runnable, KeyListener {
   private String[][] wordArray = new String[6][5];
   private String[] guess = {"B", "R", "A", "I", "N"};
   private int numGuess = 1; // has to start at 0
-  private String[][] colours = 
+  private String[] colours = {"green", "green", "green", "yellow", "grey"};
     
   public Draw() {
     Thread thread = new Thread();
@@ -54,7 +59,20 @@ public class Draw extends JPanel implements Runnable, KeyListener {
       }
     }
 
+    for (int i = 0; i < 5; i++) {
+      if (colours[i].equals("green")) {
+        g.setColor(Color.GREEN);
+      } else if (colours[i].equals("yellow")) {
+        g.setColor(Color.YELLOW);
+      } else if (colours[i].equals("grey")) {
+        g.setColor(Color.GRAY);
+      }
+      g.drawRect((125 + (75 * i)), 110, width, height);
+    }
 
+    for (int j = 0; j < 5; j++) {
+      g.drawString(guess[j], (135 + (75 * j)), (170));
+    }
   }
 
   /* (pseudocode for changing background colour of square for guess)

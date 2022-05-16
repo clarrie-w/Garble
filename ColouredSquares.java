@@ -21,5 +21,9 @@ public class ColouredSquares {
       }
     }
 
-    
+    public int getWidth() {
+        return width;
+    }
+
+
 }
