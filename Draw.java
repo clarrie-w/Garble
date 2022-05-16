@@ -7,28 +7,54 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel; 
   
 public class Draw extends JPanel implements Runnable, KeyListener {
-  
+  private int[][] x = new int[6][5];
+  private int[][] y = new int[6][5];
+  private int width = 65;
+  private int height = 65;
+  private String[][] wordArray = new String[6][5];
+  private String[] guess = {"B", "R", "A", "I", "N"};
+  private int numGuess = 1; // has to start at 0
+  private String[][] colours = 
+    
   public Draw() {
     Thread thread = new Thread();
     thread.start();
   }
-  
+
   public void paintComponent(Graphics g2) {
     super.paintComponent(g2);
     Graphics2D g = (Graphics2D) g2;
 
     g.setFont(new Font("Arial", Font.PLAIN, 70));
     g.drawString("Garble", 190, 77);
-    int x = 125;
-    int y = 110;
-    for(int i = 0; i <= 5; i++){
-      for(int j = 0; j < 5; j++){
-        g.drawRect(x, y, 65, 65);
-        x += 75;
+
+    for (int row = 0; row < x.length; row++) {
+      for (int col = 0; col < x[0].length; col++) {
+          x[row][col] = 125 + (75 * col);
       }
-      y += 75;
-      x = 125;
     }
+
+    for (int col = 0; col < y[0].length; col++) {
+      for (int row = 0; row < y.length; row++) {
+          y[row][col] = 110 + (75 * row);
+      }
+    }
+
+    for (int row = 0; row < x.length; row++) {
+      for (int col = 0; col < x[0].length; col++) {
+        g.drawRect(x[row][col], y[row][col], width, height);
+      }
+    }
+
+    for (int i = 0; i < 5; i++) {
+      for (int row = 0; row < x.length; row++) {
+        for (int col = 0; col < x[0].length; col++) {
+          wordArray[numGuess][i] = guess[i];
+        }
+      }
+    }
+
+
   }
 
   /* (pseudocode for changing background colour of square for guess)
