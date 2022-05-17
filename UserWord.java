@@ -11,15 +11,19 @@ public class UserWord {
   private String[] colours = {"grey", "grey", "grey", "grey", "grey"};
   private Scanner scanner = new Scanner(System.in);
   private String userInput;
+  private String[] userWordArray = new String[5];    
+
+  public void runScanner() {
+    userInput = scanner.nextLine().toUpperCase();
+  }
 
   public String[] getUserInput() {
-
-    String[] userWordArray = new String[5];
-
-    userInput = scanner.nextLine().toUpperCase();
-    
     for (int i = 0; i < 5; i++) {
-      userWordArray[i] = userInput.substring(i, i+1);
+      if (i == 4) {
+        userWordArray[i] = userInput.substring(i);
+      } else if (i != 4) {
+        userWordArray[i] = userInput.substring(i, i+1);
+      }
     }
     return userWordArray;
   }
@@ -34,12 +38,12 @@ public class UserWord {
   }
 
   public void setLetterColours(String[] generatedWord, String[] userGuess) {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 5; i++) {
       if (userGuess[i].equals(generatedWord[i])) {
         colours[i] = "green";
       } 
 
-      for (int j = 0; j < 6; j++) {
+      for (int j = 0; j < 5; j++) {
         if ((userGuess[i].equals(generatedWord[j])) && colours[i] != "green") {
           colours[i] = "yellow";
         }

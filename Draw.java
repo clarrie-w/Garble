@@ -27,6 +27,8 @@ public class Draw extends JPanel implements Runnable, KeyListener {
     UserWord guess = new UserWord();
     GenerateWord generatedWord = new GenerateWord();
 
+    guess.runScanner();
+
     rows[rowsIndex].setUserWordArray(guess.getUserInput());
     guess.setLetterColours(generatedWord.getWord(), rows[rowsIndex].getUserWordArray());
     rows[rowsIndex].setColours(guess.getLetterColours());
