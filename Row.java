@@ -3,7 +3,7 @@ public class Row {
     private int y = 110;
     private int width;
     private int height;
-    private String userWordPreArray;
+    private String[] userWordArray = {"", "", "", "", ""};
     private String[] colours = {"", "", "", "", ""};
     private int row;
 
@@ -12,7 +12,7 @@ public class Row {
         y = 110;
         width = 65;
         height = 65;
-        userWordPreArray = "";
+        String[] userWordArray = {"", "", "", "", ""};
         String[] colours = {"", "", "", "", ""};
         row = 0;
     }
@@ -22,17 +22,17 @@ public class Row {
         y = (rowNumber * 75) + 110;
         width = 65;
         height = 65;
-        userWordPreArray = "";
+        String[] userWordArray = {"", "", "", "", ""};
         String[] colours = {"", "", "", "", ""};
         row = rowNumber;
     }
 
-    public Row(String word, String[] colourOfEachLetter, int rowNumber) {
+    public Row(String[] word, String[] colourOfEachLetter, int rowNumber) {
         startingX = 125;
         y = (rowNumber * 75) + 110;
         width = 65;
         height = 65;
-        userWordPreArray = word;
+        userWordArray = word;
         String[] colours = colourOfEachLetter;
         row = rowNumber;
     }
@@ -45,8 +45,12 @@ public class Row {
         return y;
     }
 
-    public void setUserWordPreArray(String userInput) {
-        userWordPreArray = userInput;
+    public void setUserWordArray(String[] userInput) {
+        userWordArray = userInput;
+    }
+
+    public String[] getUserWordArray() {
+        return userWordArray;
     }
 
     public void setColours(String[] coloursOfBoxes) {
