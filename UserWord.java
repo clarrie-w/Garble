@@ -11,13 +11,13 @@ public class UserWord {
   private String[] colours = {"grey", "grey", "grey", "grey", "grey"};
   private Scanner scanner = new Scanner(System.in);
   private String userInput;
-  private String[] userWordArray = new String[5];    
 
   public void runScanner() {
     userInput = scanner.nextLine().toUpperCase();
   }
 
   public String[] getUserInput() {
+    String[] userWordArray = new String[5];    
     for (int i = 0; i < 5; i++) {
       if (i == 4) {
         userWordArray[i] = userInput.substring(i);
@@ -52,6 +52,6 @@ public class UserWord {
   }
 
   public String[] getLetterColours() {
-    return colours;
+    return colours.clone();
   }
 }

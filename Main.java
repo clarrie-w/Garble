@@ -15,7 +15,6 @@ class Main extends JFrame{
   
   public Main(){
     draw = new Draw();
-    addKeyListener(draw);
   }
   
   public static void main(String[] args) {

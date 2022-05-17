@@ -2,37 +2,43 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 import javax.swing.JPanel; 
   
-public class Draw extends JPanel implements Runnable, KeyListener {
+public class Draw extends JPanel implements Runnable {
+  Row[] rows = new Row[5];
   
   public Draw() {
-    Thread thread = new Thread();
+    System.out.println("R?");
+    Thread thread = new Thread(this);
     thread.start();
   }
   
-  public void paintComponent(Graphics g2) {
+  public void gameProcessing() {
+    System.out.println("RUNNING");
     Game game = new Game();
 
-    Row row0 = new Row(0);
-    Row row1 = new Row(1);
-    Row row2 = new Row(2);
-    Row row3 = new Row(3);
-    Row row4 = new Row(4);
-    Row[] rows = {row0, row1, row2, row3, row4};
-    
+    rows[0] = new Row(0);
+    rows[1] = new Row(1);
+    rows[2] = new Row(2);
+    rows[3] = new Row(3);
+    rows[4] = new Row(4);
+
     int rowsIndex = game.getNumGuesses();
     UserWord guess = new UserWord();
     GenerateWord generatedWord = new GenerateWord();
 
-    guess.runScanner();
+    while (rowsIndex < 5) {  
+      System.out.println("ENTER WORD: ");
+      guess.runScanner();
+      rows[rowsIndex].setUserWordArray(guess.getUserInput());
+      guess.setLetterColours(generatedWord.getWord(), rows[rowsIndex].getUserWordArray());
+      rows[rowsIndex].setColours(guess.getLetterColours());
+      repaint();
+      rowsIndex++;
+    }
+  }
 
-    rows[rowsIndex].setUserWordArray(guess.getUserInput());
-    guess.setLetterColours(generatedWord.getWord(), rows[rowsIndex].getUserWordArray());
-    rows[rowsIndex].setColours(guess.getLetterColours());
-
+  public void paintComponent(Graphics g2) {
     super.paintComponent(g2);
     Graphics2D g = (Graphics2D) g2;
 
@@ -49,50 +55,35 @@ public class Draw extends JPanel implements Runnable, KeyListener {
       x = 125;
     }
 
-    for (int i = 0; i < 5; i++) {
-      if (rows[rowsIndex].getColours()[i].equals("green")) {
-        g.setColor(Color.GREEN);
-      } else if (rows[rowsIndex].getColours()[i].equals("yellow")) {
-        g.setColor(Color.YELLOW);
-      } else if (rows[rowsIndex].getColours()[i].equals("grey")) {
-        g.setColor(Color.GRAY);
+    for(int r = 0; r < 5; r++){
+      if(rows[r] == null) continue;
+      for(int i = 0; i < 5; i++){
+        System.out.print(rows[r].getUserWordArray()[i]);
       }
-      g.drawRect((125 + (75 * i)), 110 + (75 * rowsIndex), 65, 65);
-    }
-
-    for (int j = 0; j < 5; j++) {
-      g.setColor(Color.BLACK);
-      g.drawString(rows[rowsIndex].getUserWordArray()[j], (135 + (75 * j)), (170 + (75 * rowsIndex)));
+      System.out.println(r);
+      for (int i = 0; i < 5; i++) {
+        if (rows[r].getColours()[i].equals("green")) {
+          g.setColor(Color.GREEN);
+        } else if (rows[r].getColours()[i].equals("yellow")) {
+          g.setColor(Color.YELLOW);
+        } else if (rows[r].getColours()[i].equals("grey")) {
+          g.setColor(Color.GRAY);
+        }
+        g.drawRect((125 + (75 * i)), 110 + (75 * r), 65, 65);
+      }
+      for (int j = 0; j < 5; j++) {
+        g.setColor(Color.BLACK);
+        g.drawString(rows[r].getUserWordArray()[j], (135 + (75 * j)), (170 + (75 * r)));
+      }
     }
   }
-
-
-      
-
-
-
-  // Updates the screen
-  @Override 
+  
+  @Override
   public void run() {
+    System.out.println("R!");
     while(true){
-      repaint(); 
+      gameProcessing();
     }
-  }
-
-  @Override
-  public void keyTyped(KeyEvent e) {
-  }
-
-  @Override
-  public void keyPressed(KeyEvent e) {
-    int key = e.getKeyCode();
-    if (key == KeyEvent.VK_W)
-    {
-      
-    }
-  }
-
-  @Override
-  public void keyReleased(KeyEvent e) {
+    
   }
 }
