@@ -1,20 +1,23 @@
+// BUG: when user guesses word that only has first letter right, following guesses show wrong box colours, first letter will also always be green
+// BUG: last guess will not be painted on screen
+
 import java.awt.Color; 
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel; 
+import java.util.Arrays;
   
 public class Draw extends JPanel implements Runnable {
-  Row[] rows = new Row[5];
-  
+  Row[] rows = new Row[6];
+  String[] exitGameReferenceColours = {"green", "green", "green", "green", "green"};
+
   public Draw() {
-    System.out.println("R?");
     Thread thread = new Thread(this);
     thread.start();
   }
   
   public void gameProcessing() {
-    System.out.println("RUNNING");
     Game game = new Game();
 
     rows[0] = new Row(0);
@@ -22,19 +25,29 @@ public class Draw extends JPanel implements Runnable {
     rows[2] = new Row(2);
     rows[3] = new Row(3);
     rows[4] = new Row(4);
+    rows[5] = new Row(5);
 
     int rowsIndex = game.getNumGuesses();
     UserWord guess = new UserWord();
     GenerateWord generatedWord = new GenerateWord();
-
-    while (rowsIndex < 5) {  
+    
+    while (rowsIndex < 6) {  
+      System.out.println(generatedWord.debugShowWord());
       System.out.println("ENTER WORD: ");
       guess.runScanner();
       rows[rowsIndex].setUserWordArray(guess.getUserInput());
       guess.setLetterColours(generatedWord.getWord(), rows[rowsIndex].getUserWordArray());
       rows[rowsIndex].setColours(guess.getLetterColours());
       repaint();
+      if (rowsIndex == 5) {
+        System.out.println("reached 5th row");
+      }
       rowsIndex++;
+      
+      if (rowsIndex == 6) {
+        System.out.println("You lose!");
+        System.exit(0);
+      }
     }
   }
 
@@ -55,12 +68,8 @@ public class Draw extends JPanel implements Runnable {
       x = 125;
     }
 
-    for(int r = 0; r < 5; r++){
-      if(rows[r] == null) continue;
-      for(int i = 0; i < 5; i++){
-        System.out.print(rows[r].getUserWordArray()[i]);
-      }
-      System.out.println(r);
+    for (int r = 0; r < 6; r++) {
+      if (rows[r] == null) continue; // used to avoid null array error
       for (int i = 0; i < 5; i++) {
         if (rows[r].getColours()[i].equals("green")) {
           g.setColor(Color.GREEN);
@@ -75,15 +84,18 @@ public class Draw extends JPanel implements Runnable {
         g.setColor(Color.BLACK);
         g.drawString(rows[r].getUserWordArray()[j], (135 + (75 * j)), (170 + (75 * r)));
       }
+
+      if (Arrays.deepEquals(rows[r].getColours(), exitGameReferenceColours)) {
+        System.out.println("You won!");
+        System.exit(0);
+      }
     }
   }
   
   @Override
   public void run() {
-    System.out.println("R!");
     while(true){
       gameProcessing();
-    }
-    
+    }    
   }
 }
